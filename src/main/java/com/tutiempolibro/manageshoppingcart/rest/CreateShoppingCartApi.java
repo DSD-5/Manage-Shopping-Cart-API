@@ -6,11 +6,16 @@
 package com.tutiempolibro.manageshoppingcart.rest;
 
 import com.tutiempolibro.manageshoppingcart.entity.ShoppingType;
+import com.tutiempolibro.manageshoppingcart.service.IManageShoppingCartService;
+
 import io.swagger.annotations.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +35,15 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/v1/shopping")
 public class CreateShoppingCartApi {
-
+    
+    @Autowired
+    private IManageShoppingCartService manageShoppingCartService; 
+    
     @ApiOperation(value = "creation of temporary shopping cart and returns list items of shopping", nickname = "createShoppingCart", notes = "", response = ShoppingType.class, responseContainer = "List", tags = {
 	    "createShoppingCart", })
     @ApiResponses(value = {
 	    @ApiResponse(code = 200, message = "List of items shopping cart", response = ShoppingType.class, responseContainer = "List") })
-    @GetMapping(value = "/createShoppingCart", produces = { "application/json" })
+    @PostMapping(value = "/createShoppingCart", produces = { "application/json" })
     List<ShoppingType> createShoppingCart(
 	    @NotNull @ApiParam(value = "value ID Client", required = true) @Valid @RequestParam(value = "clientId", required = true) Integer clientId,
 	    @NotNull @ApiParam(value = "value ID Book", required = true) @Valid @RequestParam(value = "bookId", required = true) Integer bookId,
@@ -44,7 +52,7 @@ public class CreateShoppingCartApi {
 	    @ApiParam(value = "Identifier for the system originating the request") @RequestHeader(value = "Application", required = false) String application,
 	    @ApiParam(value = "Including the proof of access (using OAuth2.0 security model) to guarantee that the consumer has privileges to access the entity database") @RequestHeader(value = "Authorization", required = false) String authorization) {
 
-	return null;
+	return manageShoppingCartService.createOrUpdateShoppingCart(clientId, bookId, quantity, type);
     }
 
 }

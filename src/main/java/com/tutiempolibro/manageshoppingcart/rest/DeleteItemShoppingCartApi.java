@@ -5,24 +5,27 @@
  */
 package com.tutiempolibro.manageshoppingcart.rest;
 
-import com.tutiempolibro.manageshoppingcart.entity.ShoppingType;
-import io.swagger.annotations.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tutiempolibro.manageshoppingcart.entity.ShoppingType;
+import com.tutiempolibro.manageshoppingcart.service.IManageShoppingCartService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-10-30T01:26:36.216-05:00")
 
 @Api(value = "deleteItemShoppingCart", description = "the deleteItemShoppingCart API")
@@ -30,15 +33,24 @@ import java.util.List;
 @RequestMapping(value = "/v1/shopping")
 public class DeleteItemShoppingCartApi {
 
-    @ApiOperation(value = "Delete items shopping cart and returns list items of shopping", nickname = "deleteItemShoppingCart", notes = "", response = ShoppingType.class, responseContainer = "List", tags={ "deleteItemShoppingCart", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "List of items shopping cart", response = ShoppingType.class, responseContainer = "List") })
-    @GetMapping(value = "/deleteItemShoppingCart",
-        produces = { "application/json" })
-    List<ShoppingType> deleteItemShoppingCart(@NotNull @ApiParam(value = "value ID Client", required = true) @Valid @RequestParam(value = "shoppingId", required = true) Integer shoppingId,@NotNull @ApiParam(value = "value ID Book", required = true) @Valid @RequestParam(value = "bookId", required = true) Integer bookId,@ApiParam(value = "Identifier for the system originating the request" ) @RequestHeader(value="Application", required=false) String application,@ApiParam(value = "Including the proof of access (using OAuth2.0 security model) to guarantee that the consumer has privileges to access the entity database" ) @RequestHeader(value="Authorization", required=false) String authorization){
-	
-	return null;
-	
+    @Autowired
+    private IManageShoppingCartService manageShoppingCartService; 
+    
+    
+    @ApiOperation(value = "Delete items shopping cart and returns list items of shopping", nickname = "deleteItemShoppingCart", notes = "", response = ShoppingType.class, responseContainer = "List", tags = {
+	    "deleteItemShoppingCart", })
+    @ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "List of items shopping cart", response = ShoppingType.class, responseContainer = "List") })
+    @PostMapping(value = "/deleteItemShoppingCart", produces = { "application/json" })
+    List<ShoppingType> deleteItemShoppingCart(
+	    @NotNull @ApiParam(value = "value ID Client", required = true) @Valid @RequestParam(value = "shoppingId", required = true) Integer shoppingId,
+	    @NotNull @ApiParam(value = "value ID Book", required = true) @Valid @RequestParam(value = "bookId", required = true) Integer bookId,
+	    @ApiParam(value = "Identifier for the system originating the request") @RequestHeader(value = "Application", required = false) String application,
+	    @ApiParam(value = "Including the proof of access (using OAuth2.0 security model) to guarantee that the consumer has privileges to access the entity database") @RequestHeader(value = "Authorization", required = false) String authorization) {
+
+	return manageShoppingCartService.deleteShoppingCart(shoppingId, bookId);
+
     }
 
+    
 }
