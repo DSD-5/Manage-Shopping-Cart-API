@@ -30,5 +30,18 @@ public class ShoppingCartModel implements Serializable {
     
     private Double total;
     
+    private Integer iddelivery;
+    
+    private Double costodelivery;
+    
+    private Double subtotalventa;
+    
+    private Double subtotalalquiler;
+    
+    private Double descuentoventa;
+    
+    private Double descuentoalquiler;
+    
+    private Date fechaactualizacion;
     
 }
